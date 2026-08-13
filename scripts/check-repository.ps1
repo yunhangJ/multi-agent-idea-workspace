@@ -83,7 +83,10 @@ foreach ($relativePath in $trackedFiles) {
         continue
     }
 
-    $item = Get-Item -LiteralPath $absolutePath
+    # PowerShell treats dotfiles as hidden on Unix runners. `Test-Path` sees
+    # them, but `Get-Item` requires `-Force` to resolve entries such as
+    # `.editorconfig` and `.gitignore` consistently across platforms.
+    $item = Get-Item -Force -LiteralPath $absolutePath
     if ($item.Length -gt $maximumFileBytes) {
         $errors.Add("Tracked file exceeds 10 MiB: $normalizedPath ($($item.Length) bytes)")
     }
