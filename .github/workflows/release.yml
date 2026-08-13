@@ -1,0 +1,104 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  windows-installer:
+    name: Build and publish Windows installer
+    runs-on: windows-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+
+      - name: Enable pnpm
+        run: corepack enable && corepack prepare pnpm@11.9.0 --activate
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Rust 1.88
+        run: rustup toolchain install 1.88.0 --profile minimal
+
+      - name: Select Rust 1.88
+        run: rustup override set 1.88.0
+
+      - name: Run frontend tests
+        run: pnpm test
+
+      - name: Run Rust tests
+        run: cargo test --locked --manifest-path src-tauri/Cargo.toml
+
+      - name: Build Windows installer
+        run: pnpm desktop:build
+
+      - name: Prepare and audit release assets
+        shell: pwsh
+        run: |
+          $source = "src-tauri/target/release/bundle/nsis/Idea Workspace_0.1.0_x64-setup.exe"
+          $asset = "Idea-Workspace_0.1.0_x64-setup.exe"
+          $checksum = "$asset.sha256"
+          Copy-Item -LiteralPath $source -Destination $asset
+
+          $binary = [System.Text.Encoding]::ASCII.GetString(
+            [System.IO.File]::ReadAllBytes("src-tauri/target/release/idea-workspace.exe")
+          )
+          $forbidden = @(
+            'JiangYunhang',
+            'D:\\brainstorm',
+            'DeepSeek',
+            'Moon Bridge',
+            'dp_worker',
+            'dp_writer',
+            'sk-[A-Za-z0-9._-]{16,}'
+          )
+          foreach ($pattern in $forbidden) {
+            if ($binary -match $pattern) {
+              throw "Release binary contains a forbidden local or credential marker."
+            }
+          }
+
+          $hash = (Get-FileHash -LiteralPath $asset -Algorithm SHA256).Hash.ToLowerInvariant()
+          Set-Content -LiteralPath $checksum -Value "$hash  $asset" -Encoding ascii
+
+      - name: Publish GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $notes = @"
+          Idea Workspace 的首个公开 Windows 版本：一个用于完善 Idea 的本地 Multi-Agent 可视化白板。
+
+          ## 下载与校验
+
+          下载安装程序及配套的 `.sha256` 文件。在 PowerShell 中运行：
+
+          ```powershell
+          Get-FileHash .\Idea-Workspace_0.1.0_x64-setup.exe -Algorithm SHA256
+          ```
+
+          结果应与校验文件一致。
+
+          ## 使用说明
+
+          - 安装后由用户自行配置 OpenAI API Key；安装包和仓库均不包含 API Key。
+          - 安装包尚未进行商业代码签名，Windows SmartScreen 可能显示“未知发布者”。
+          - 当前只发布 Windows x64 安装程序。
+          "@
+
+          gh release create $env:GITHUB_REF_NAME `
+            --title "Idea Workspace $env:GITHUB_REF_NAME" `
+            --notes $notes `
+            Idea-Workspace_0.1.0_x64-setup.exe `
+            Idea-Workspace_0.1.0_x64-setup.exe.sha256
