@@ -2,6 +2,10 @@
 
 一个用于完善 Idea 的本地 Multi-Agent 可视化白板。桌面版可以连接 OpenAI 官方接口或兼容的自定义中转站；工程、卡片和 Agent 私有历史保存在本机。
 
+> **Windows 下载：** [下载 Idea Workspace v0.1.0 安装程序](https://github.com/yunhangJ/multi-agent-idea-workspace/releases/download/v0.1.0/Idea-Workspace_0.1.0_x64-setup.exe) · [查看 Release 说明与 SHA-256 校验文件](https://github.com/yunhangJ/multi-agent-idea-workspace/releases/tag/v0.1.0)
+
+该安装包尚未进行商业代码签名，Windows SmartScreen 可能显示“未知发布者”。请从上方 GitHub Release 下载并核对 SHA-256；安装后需自行配置 OpenAI API Key，仓库和安装包均不附带 API Key。
+
 本项目以 [MIT License](LICENSE) 开源。第三方依赖继续遵循各自的许可证，详情见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
 
 ## 为什么不是普通聊天窗口
