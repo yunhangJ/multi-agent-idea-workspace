@@ -18,4 +18,4 @@ Describe the user-visible change and why it belongs in Idea Workspace.
 
 ## Rights
 
-- [ ] I have the right to submit all code, text, and assets in this pull request under the repository's license once selected.
+- [ ] I have the right to submit all code, text, and assets in this pull request under the repository's MIT License.
