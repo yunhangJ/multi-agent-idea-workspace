@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "savedAt": "2026-08-10T00:00:00.000Z",
+  "workspace": {
+    "id": "workspace-open-test",
+    "title": "已打开的工程测试",
+    "subtitle": "工程文件 · 测试"
+  },
+  "agents": [],
+  "cards": [
+    {
+      "id": "root-idea",
+      "type": "idea",
+      "title": "已打开的工程测试",
+      "content": "这个内容来自独立工程文件。",
+      "status": "kept",
+      "creator": "user",
+      "parentCardIds": [],
+      "position": { "x": 360, "y": 80 },
+      "visible": true
+    }
+  ],
+  "files": [],
+  "discussionZones": [],
+  "discussionRuns": [],
+  "agentMemories": [],
+  "runs": [],
+  "relations": [],
+  "snapshots": []
+}

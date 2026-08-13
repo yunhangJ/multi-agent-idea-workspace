@@ -1,0 +1,56 @@
+# Dependencies and generated frontend output
+/node_modules/
+/dist/
+/.vite/
+/.pnpm-store/
+coverage/
+*.tsbuildinfo
+
+# Rust / Tauri generated output
+/src-tauri/target/
+/src-tauri/gen/schemas/
+
+# Local application installs and release artifacts
+/Idea Workspace/
+*.exe
+*.msi
+*.msix
+*.appx
+*.pdb
+*.dmp
+
+# Local workspaces may contain private user material
+*.idea-workspace.json
+!/test-fixtures/*.idea-workspace.json
+
+# Secrets and signing material
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.cer
+*.crt
+
+# Logs, caches, audit output, and editor metadata
+*.local
+*.log
+/.logs/
+/.artifacts/
+/.audit/
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db
+
+# Browser profiles and local media tooling
+/.remotion/
+/.edge-profile/
+/.video-tools/
+
+# Promotional production is kept locally and distributed through Releases.
+# It has an independent toolchain and licensing boundary from the core app.
+/promo/
+/video-studio/

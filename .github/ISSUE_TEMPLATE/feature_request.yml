@@ -1,0 +1,33 @@
+name: Feature request
+description: Propose a focused improvement to the idea-development workflow.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What idea-development task is difficult today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed interaction
+      description: Describe the user-visible behavior, not only the implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context and privacy impact
+      description: Explain which cards, files, Agent histories, or external requests the feature would access.
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope confirmation
+      options:
+        - label: This proposal does not require posting credentials or real private workspace data.
+          required: true
